@@ -8,8 +8,8 @@ def add_pet_view(request):
 
 
 def pet_details_view(request, username, pet_slug):
-    pet = Pet.objects.get(slug=pet_slug)
-    photos = pet.photos.all()
+    pet = Pet.objects.prefetch_related('photos').get(slug=pet_slug)
+    photos = pet.photos.prefetch_related('tagged_pets').all()
 
     context = {
         'pet':pet,

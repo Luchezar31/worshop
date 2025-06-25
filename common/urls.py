@@ -3,5 +3,8 @@ from django.urls import path
 from common import views
 
 urlpatterns = [
-    path('',views.common_view,name='home-page')
+    path('',views.common_view,name='home-page'),
+    path('like/<int:photo_id>/',views.like,name='like'),
+    path('share/<int:photo_id>/',views.share,name='share'),
 ]
+

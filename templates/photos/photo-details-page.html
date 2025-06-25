@@ -7,8 +7,9 @@
             <!-- Start Pet Photo Post Section -->
             {% include 'common/pet-post.html' %}
 
-{#            {% include 'common/comments.html' %}#}
-
+            {% if comments %}
+                {% include 'common/comments.html' %}
+            {% endif %}
 
             <!-- End Pet Photo Post Section -->
 
