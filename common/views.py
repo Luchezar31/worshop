@@ -7,8 +7,7 @@ from photos.models import Photo
 
 # Create your views here.
 def common_view(request):
-
-    all_photos = Photo.objects.all()
+    all_photos = Photo.objects.prefetch_related('comment_set').all()
 
     context = {
         'all_photos':all_photos

@@ -9,10 +9,12 @@ def photos_add_view(request):
 
 
 def photos_details_views(request, pk):
-    photo = Photo.objects.get(pk=pk)
+    photo = Photo.objects.prefetch_related('comment_set').get(pk=pk)
+    comments = photo.comment_set.all()
 
     context = {
-        'photo':photo
+        'photo':photo,
+        'comments':comments
     }
 
     return render(request, 'photos/photo-details-page.html',context)
