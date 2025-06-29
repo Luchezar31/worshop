@@ -1,5 +1,6 @@
 from django import forms
 
+from common.mixins import ReadOnlyMixin
 from pets.models import Pet
 
 
@@ -43,5 +44,12 @@ class PetEditForm(PetBaseForm):
     pass
 
 
-class PetDeleteForm(PetBaseForm):
-    pass
+class PetDeleteForm(ReadOnlyMixin,PetBaseForm):
+    class Meta(PetBaseForm.Meta):
+        fields = ('name', 'date_of_birth', 'personal_photo',)
+
+        labels = {
+            'name': 'Pet name',
+            'date_of_birth': 'Date of birth',
+            'personal_photo': 'Link to image'
+        }

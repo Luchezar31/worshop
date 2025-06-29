@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
-from pets.forms import PetCreateForm, PetEditForm
+from common.forms import AddCommentForm
+from pets.forms import PetCreateForm, PetEditForm, PetDeleteForm
 from pets.models import Pet
 
 
@@ -22,10 +23,12 @@ def add_pet_view(request):
 def pet_details_view(request, username, pet_slug):
     pet = Pet.objects.prefetch_related('photos').get(slug=pet_slug)
     photos = pet.photos.prefetch_related('tagged_pets').all()
+    add_comment_form = AddCommentForm(request.POST or None)
 
     context = {
         'pet': pet,
-        'photos': photos
+        'photos': photos,
+        'add_comment_form':add_comment_form
     }
 
     return render(request, 'pets/pet-details-page.html', context)
@@ -47,4 +50,16 @@ def pet_edit_view(request, username, pet_slug):
 
 
 def pet_delete_view(request, username, pet_slug):
-    return render(request, 'pets/pet-delete-page.html')
+    pet = Pet.objects.get(slug=pet_slug)
+    delete_form = PetDeleteForm(instance=pet)
+
+    if request.method == 'POST':
+        pet.delete()
+        return redirect('profile-page' , pk=1)
+
+    context = {
+        'pet':pet,
+        'delete_form':delete_form
+    }
+
+    return render(request, 'pets/pet-delete-page.html',context)
