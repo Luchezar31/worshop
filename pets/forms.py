@@ -7,11 +7,6 @@ from pets.models import Pet
 class PetBaseForm(forms.ModelForm):
     class Meta:
         model = Pet
-        fields = '__all__'
-
-
-class PetCreateForm(PetBaseForm):
-    class Meta(PetBaseForm.Meta):
         fields = ('name', 'date_of_birth', 'personal_photo',)
 
         labels = {
@@ -21,22 +16,26 @@ class PetCreateForm(PetBaseForm):
         }
 
         widgets = {
-            'date_of_birth':forms.DateInput(
+            'date_of_birth': forms.DateInput(
                 attrs={
-                    'type':'date'
+                    'type': 'date'
                 }
             ),
-            'personal_photo':forms.URLInput(
+            'personal_photo': forms.URLInput(
                 attrs={
-                    'placeholder':'Link to image'
+                    'placeholder': 'Link to image'
                 }
             ),
-            'name':forms.TextInput(
+            'name': forms.TextInput(
                 attrs={
-                    'placeholder':'Pet name'
+                    'placeholder': 'Pet name'
                 }
             )
         }
+
+
+class PetCreateForm(PetBaseForm):
+    pass
 
 
 

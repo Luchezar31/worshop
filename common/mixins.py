@@ -4,4 +4,4 @@ class ReadOnlyMixin:
 
         for field in self.fields.values():
             field.widget.attrs['readonly'] = True
-            field.widget.attrs['disable'] = False
+            field.widget.attrs['disabled'] = True

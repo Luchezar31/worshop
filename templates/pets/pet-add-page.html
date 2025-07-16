@@ -9,7 +9,7 @@
         <!-- Start Add Pet Form -->
         <form method="POST">
             {% csrf_token %}
-            {{ create_form.as_p }}
+            {{ form.as_p }}
         <button class="add-btn" type="Submit">Add</button>
         </form>
 

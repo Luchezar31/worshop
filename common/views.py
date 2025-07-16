@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, resolve_url
+from django.views.generic import ListView
+from django.views.generic.edit import FormMixin
 from pyperclip import copy
 
 from common.forms import AddCommentForm, SearchForm
@@ -6,24 +8,49 @@ from common.models import Like
 from photos.models import Photo
 
 
-# Create your views here.
-def common_view(request):
-    all_photos = Photo.objects.prefetch_related('comment_set').all()
-    add_comment_form = AddCommentForm(request.POST or None)
-    search_form = SearchForm(request.GET or None)
+class CommonView(ListView):
+    model = Photo
+    template_name = 'common/home-page.html'
+    context_object_name = 'all_photos'
+    paginate_by = 5
 
-    if search_form.is_valid():
-        all_photos=Photo.objects.filter(
-            tagged_pets__name__icontains=search_form.cleaned_data['text']
-        )
+    def get_context_data(self,object_list=None,**kwargs):
+        kwargs.update({
+            'add_comment_form': AddCommentForm(),
+            'search_form': SearchForm()
+        })
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pet_name = self.request.GET.get('text')
+
+        if pet_name is not None:
+            queryset = queryset.filter(tagged_pets__name__icontains=pet_name)
+
+        return queryset
 
 
-    context = {
-        'all_photos':all_photos,
-        'add_comment_form':add_comment_form,
-        'search_form':search_form
-    }
-    return render(request,'common/home-page.html',context)
+
+
+
+# def common_view(request):
+#     all_photos = Photo.objects.prefetch_related('comment_set').all()
+#     add_comment_form = AddCommentForm(request.POST or None)
+#     search_form = SearchForm(request.GET or None)
+#
+#     if search_form.is_valid():
+#         all_photos=Photo.objects.filter(
+#             tagged_pets__name__icontains=search_form.cleaned_data['text']
+#         )
+#
+#
+#     context = {
+#         'all_photos':all_photos,
+#         'add_comment_form':add_comment_form,
+#         'search_form':search_form
+#     }
+#     return render(request,'common/home-page.html',context)
 
 def like(request,photo_id):
 

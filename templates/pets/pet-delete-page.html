@@ -7,7 +7,7 @@
         <!-- Starts Delete Pet Form -->
         <form method="post">
             {% csrf_token %}
-            {{ delete_form.as_p }}
+            {{ form.as_p }}
             <button class="delete-btn" type="submit">Delete</button>
             <!-- Go Back Button -->
             <a class="btn btn-primary" href="javascript:history.back()">
