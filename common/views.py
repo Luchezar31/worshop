@@ -12,7 +12,7 @@ class CommonView(ListView):
     model = Photo
     template_name = 'common/home-page.html'
     context_object_name = 'all_photos'
-    paginate_by = 5
+    paginate_by = 1
 
     def get_context_data(self,object_list=None,**kwargs):
         kwargs.update({
